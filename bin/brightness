@@ -1,0 +1,22 @@
+#!/bin/bash
+# This script adjusts your laptop's brightness.
+# In order to use this, your /sys/class/backlight/acpi_video0/brightness should be writeable
+
+
+FILE=/sys/class/backlight/acpi_video0/brightness
+
+current_brightness=`cat $FILE`
+
+case $1 in 
+up)
+    new_brightness=`expr $current_brightness + 6`
+    ;;
+down)
+    new_brightness=`expr $current_brightness - 6`
+    ;;
+*)
+    echo $current_brightness
+    exit;
+    ;;
+esac
+echo $new_brightness > $FILE
