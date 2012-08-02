@@ -1,0 +1,25 @@
+# !/bin/bash
+# 
+# This script restores screen backlight on resume from suspend 
+# on Samsung NP900X3B/C.
+#
+# This should be placed in /etc/pm/sleep.d
+# Stolen from https://help.ubuntu.com/community/SamsungSeries9
+case "$1" in
+  suspend|hibernate)
+    # do nothing
+  ;;
+
+  resume|thaw)
+    # brightness value is not always accurate.  Set to actual_brightness
+    # to restore brightness as it was before suspend.
+    echo `cat  /sys/class/backlight/intel_backlight/actual_brightness` > /sys/class/backlight/intel_backlight/brightness
+
+    # Toggle to activate the screen backlight
+    echo 1 > "/sys/class/backlight/intel_backlight/bl_power"
+    echo 0 > "/sys/class/backlight/intel_backlight/bl_power"
+  ;;
+  *)
+     exit 1
+esac
+exit 0

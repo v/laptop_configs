@@ -7,4 +7,7 @@ cd "${OLDPWD}"
 
 # Link in files, replacing whatever's already there.
 mkdir -p ${HOME}/bin
-ln -fs "${HOME}/laptop_configs/bin/brightness" "${HOME}/bin/brightness"
+ln -fs "${HOME}/laptop_configs/bin/brightness" "${HOME}/bin/"
+ln -fs "${HOME}/laptop_configs/bin/volume" "${HOME}/bin/"
+ln -fs "${HOME}/laptop_configs/bin/run_once" "${HOME}/bin/"
+sudo ln -fs "${HOME}/laptop_configs/pm/20_suspend_brightness_fix" "/etc/pm/sleep.d/"
