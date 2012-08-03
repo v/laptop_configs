@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+# This is a simple script that notifies you when your battery is low using libnotify.
+# It can easily be changed to hibernate/sleep your machine.
+import pynotify
+import re
+import time
+
+limit = 1000
+sleeptime = 60 #seconds
+sleep_command = "/usr/sbin/pm-hibernate"
+
+
+def get_battery_status():
+    filename = '/proc/acpi/battery/BAT1/state'
+    batteryinfo = open(filename).read()
+
+    m = re.search('remaining capacity:\s+(\d+)', batteryinfo)
+
+    n = re.search('charging state:\s+(\w+)', batteryinfo)
+    charge_status = n.group(1)
+
+    charging = True
+    if charge_status == 'discharging':
+        charging = False
+
+    return int(m.group(1)), charging
+
+if __name__ == '__main__':
+    pynotify.init('Battery Daemon')
+    notified = False
+    while True:
+        battery, charging = get_battery_status()
+        if not charging and battery < limit:
+            if not notified:
+                notified = True
+                n = pynotify.Notification('Battery Daemon', 'Your battery is mad low bro. You should hibernate.')
+                n.set_urgency(pynotify.URGENCY_CRITICAL)
+                n.show() 
+        else:
+            notified = False
+
+        print battery, charging
+        time.sleep(sleeptime)

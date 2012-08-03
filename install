@@ -11,3 +11,11 @@ ln -fs "${HOME}/laptop_configs/bin/brightness" "${HOME}/bin/"
 ln -fs "${HOME}/laptop_configs/bin/volume" "${HOME}/bin/"
 ln -fs "${HOME}/laptop_configs/bin/run_once" "${HOME}/bin/"
 sudo ln -fs "${HOME}/laptop_configs/pm/20_suspend_brightness_fix" "/etc/pm/sleep.d/"
+
+# Put the battery daemon in place.
+sudo ln -fs "${HOME}/laptop_configs/init/batteryd.conf" "/etc/init/"
+sudo ln -fs "${HOME}/laptop_configs/bin/batteryd" "/usr/sbin/"
+
+# Start the battery daemon
+sudo initctl reload-configuration
+sudo start batteryd
